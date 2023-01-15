@@ -24,6 +24,8 @@ class Parking:
 
         self.cobros = []
 
+        self.vehiculos = []
+
 
 #Después de inicializar los atributos de la clase, voy a crear un método que 
 #realice el costo de cada vehículo por el tiempo que esté en la plaza correspondiete
@@ -67,53 +69,36 @@ def calcular_coste_plaza(self, matricula):
 #de vehículo que utilice, por lo que llamamos almétodo 'Asignar plazas'
 #y depende del tipo de vehículo que introduzca el cliente, se ocupará la plaza
 #de ese vehículo restando las plazas libres por cada uno.
-    def asignar_plaza(self, matricula, tipo_vehiculo):
+    def asignar_plaza(self, vehiculo):
 
-        if tipo_vehiculo == "turismo":
-
-            for plaza in self.plazas_turismo:
-
-            #vehículo = Turismo(matricula, fecha_entrada = datetime.now())
-                
-                if not plaza.ocupada:
-
-                    plaza.ocupada = True
-
-                    plaza.matricula = matricula
-
-                    return plaza
-
-        elif tipo_vehiculo == "moto":
-
-            for plaza in self.plazas_moto:
-            
-            #vehículo = Moto(matricula, fecha_entrada = datetime.now())
-             
-                if not plaza.ocupada:
-
-                    plaza.ocupada = True
-
-                    plaza.matricula = matricula
-
-                    return plaza
-
-        elif tipo_vehiculo == "pmr":
-
-            for plaza in self.plazas_pmr:
-            
-            #vehículo = PMR(matricula, fecha_entrada = datetime.now())
-                
-                if not plaza.ocupada:
-
-                    plaza.ocupada = True
-
-                    plaza.matricula = matricula
-
-                    return plaza
+        if vehiculo.tipo == "turismo":
+           
+            plazas = self.plazas_turismo
+        
+        elif vehiculo.tipo == "moto":
+        
+            plazas = self.plazas_moto
+        
+        elif vehiculo.tipo == "pmr":
+        
+            plazas = self.plazas_pmr
+        
         else:
+        
+            raise ValueError("Tipo de vehículo no válido")
 
-            return None
-
+       if plazas:
+        
+            plaza = plazas.pop(0)
+        
+            vehiculo.plaza = plaza
+        
+            self.vehiculos.append(vehiculo)
+        
+        else:
+        
+            raise ValueError("No hay plazas disponibles para este tipo de vehículo")
+        
 
 #Este método lo utilizaremos en el método de imprimir el ticker (depositar_vehículo)
 #Debemos de importar la librería de Python 'random' para el aleatorio
@@ -129,21 +114,52 @@ def calcular_coste_plaza(self, matricula):
 #y la fecha en la que se depositó en la plaza. 
 #Se generará un pin aleatoriamente de 6 dígitos que servirá para luego sascar el vehículo
 #del lugar asignado. No utiliza la herencia
-    def depositar_vehiculo(self, matricula, tipo_vehiculo, plazas_fecha_deposito):
-
-        plaza = self.asignar_plaza(matricula, tipo_vehiculo, plazas_fecha_deposito)
-
-        if plaza:
-
-            pin = generate_pin()
-
-            self.abonados[matricula] = Ticket(matricula, plaza.id, pin, plazas_fecha_deposito)
-
-            return self.abonados[matricula]
-
+    def depositar_vehiculo(self, matricula, tipo_vehiculo, abonado=False):
+    
+        if tipo_vehiculo == "turismo":
+    
+            vehiculo = Turismo(matricula, fecha_entrada=datetime.now())
+    
+        elif tipo_vehiculo == "moto":
+    
+            vehiculo = Moto(matricula, fecha_entrada=datetime.now())
+    
+        elif tipo_vehiculo == "pmr":
+    
+            vehiculo = PMR(matricula, fecha_entrada=datetime.now())
+    
         else:
+    
+            raise ValueError("Tipo de vehículo no válido")
 
-            return None
+        if abonado:
+    
+            pin = self.generar_pin()
+    
+            self.abonados[matricula] = pin
+    
+            vehiculo.pin = pin
+    
+            vehiculo.abonado = abonado
+        
+    
+        vehiculo.fecha_deposito = datetime.now()
+    
+        self.asignar_plaza(vehiculo)
+
+#Imprimimos el ticker con la información necesaria y requerida
+        print("Ticket de estacionamiento:")
+       
+        print("Matricula: ", vehiculo.matricula)
+       
+        print("Fecha de deposito: ", vehiculo.fecha_deposito)
+       
+        print("Plaza asignada: ", vehiculo.plaza)
+       
+            if abonado:
+       
+        print("Pin de retirada: ", pin)
+
 
 #RETIRAR VEHÍCULO
 
@@ -152,35 +168,39 @@ def calcular_coste_plaza(self, matricula):
 #hemos implementado un método a parte donde se especifica las tarifas de cada uno y que
 #hemos utilizado para que resulte más simple el código y fácil de entender
 #Este método no se utiliza la herencia
-    def liberar_plaza(self, matricula, pin, plaza_id):
-
-        if matricula in self.abonados:
-
-            if self.abonados[matricula].pin == pin and 
-            
-            self.abonados[matricula].plaza_id == plaza_id:
-
-                coste, tarifa = self.calcular_coste_plaza(matricula)
-
-                print(f'El precio final es {coste}€ con una tarifa de {tarifa}€ por minuto')
-
-                for plaza in self.plazas:
-
-                    if plaza.id == plaza_id:
-
-                        plaza.ocupada = False
-
-                        plaza.matricula = None
-
-                        del self.abonados[matricula]
-
-                        return True
-            else:
-
-                return False
-        else:
-
-            return False
+    def liberar_plaza(self, matricula, pin):
+       
+        for vehiculo in self.vehiculos:
+       
+            if vehiculo.matricula == matricula:
+       
+                if vehiculo.pin != pin:
+       
+                    raise ValueError("Pin incorrecto")
+       
+                vehiculo.fecha_salida = datetime.now()
+       
+                tiempo_estacionado = vehiculo.fecha_salida - vehiculo.fecha_entrada
+       
+                minutos_estacionado = tiempo_estacionado.total_seconds() / 60
+       
+                costo_total = vehiculo.calcular_costo(minutos_estacionado)
+       
+                print(f"Costo total: {costo_total} €")
+       
+                factura = vehiculo.generar_factura()
+       
+                self.plazas_libres.append(vehiculo.plaza)
+       
+                self.vehiculos.remove(vehiculo)
+       
+                self.cobros.append(factura)
+       
+                return costo_total
+        
+    def guardar_cobro(self, factura):
+        
+        self.coleccion_cobros.append(factura)
 
     #def liberar_plaza(self, matricula):
         
