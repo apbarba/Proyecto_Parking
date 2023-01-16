@@ -2,6 +2,9 @@
 import random
 
 from datetime import datetime
+from Parking.Vehiculo.Moto import Moto
+from Parking.Vehiculo.Pmr import PMR
+from Parking.Vehiculo.Turismo import Turismo
 
 class Parking:
 
@@ -16,8 +19,6 @@ class Parking:
 
         self.plazas_pmr = plazas_pmr
 
-        self.plazas_fecha_deposito = []
-
         self.plazas = []
 
         self.abonados = {}
@@ -26,42 +27,52 @@ class Parking:
 
         self.vehiculos = []
 
+        self.pin = [1,2,3,4,5,6,7,8,9,10]
+
+
+    #vehiculo = Turismo(matricula, fecha_entrada=datetime.now()) //DECLARAR LA MATRÍCULA
+    #vehiculo = Moto(matricula, fecha_entrada=datetime.now()) //DECLARAR LA MATRÍCULA
+    #vehiculo = PMR(matricula, fecha_entrada=datetime.now()) //DECLARAR LA MATRÍCULA
+
+
+
+
 
 #Después de inicializar los atributos de la clase, voy a crear un método que 
 #realice el costo de cada vehículo por el tiempo que esté en la plaza correspondiete
 #para ello, he utilizado el datetime.now para saber la hora y el tiempo actual y calcularlo.
 
-def calcular_coste_plaza(self, matricula):
+    def calcular_costo_plaza(self, matricula):
 
-    tiempo_estacionado = datetime.now() - self.abonados[matricula].fecha_entrada
+        tiempo_estacionado = datetime.now() - self.abonados[matricula].fecha_entrada
 
-    minutos_estacionado = tiempo_estacionado.total_seconds() / 60
+        minutos_estacionado = tiempo_estacionado.total_seconds() / 60
 
     #self.abonados[matricula].calcular_costo(minutos_estacionado)
 
    # return self.abonados[matricula].costo_total, self.abonados[matricula].tarifa
     
-    tipo_vehiculo = self.abonados[matricula].tipo_vehiculo
+        tipo_vehiculo = self.abonados[matricula].tipo_vehiculo
 
-    if tipo_vehiculo == "turismo":
+        if tipo_vehiculo == "turismo":
 
-        tarifa = 0.12
+            tarifa = 0.12
     
-    elif tipo_vehiculo == "moto":
+        elif tipo_vehiculo == "moto":
 
-        tarifa = 0.08
+            tarifa = 0.08
 
-    elif tipo_vehiculo == "pmr":
+        elif tipo_vehiculo == "pmr":
 
-        tarifa = 0.10
+            tarifa = 0.10
     
-    else:
+        else:
 
-        tarifa = 0
+            tarifa = 0
 
-    coste = minutos_estacionado * tarifa
+        coste = minutos_estacionado * tarifa
 
-    return coste, tarifa
+        return coste, tarifa
 
 #DEPOSITAR VEHÍCULO
 
@@ -87,7 +98,7 @@ def calcular_coste_plaza(self, matricula):
         
             raise ValueError("Tipo de vehículo no válido")
 
-       if plazas:
+        if plazas:
         
             plaza = plazas.pop(0)
         
@@ -100,14 +111,14 @@ def calcular_coste_plaza(self, matricula):
             raise ValueError("No hay plazas disponibles para este tipo de vehículo")
         
 
-#Este método lo utilizaremos en el método de imprimir el ticker (depositar_vehículo)
-#Debemos de importar la librería de Python 'random' para el aleatorio
-#y lo hemos definido que se generen los seis dígitos entre
-#el 1 y el 100, número pequeños.
+#Este método lo utilizaremos para generar aleatoriamente un pin de seis dígitos
+#que hemos declarado como atributo de la clase inicializado en una lista del 1 al 10
+#por lo que utilizamos la función sample para poder utilizar nuestra lista de numeros declaradas
+#y el número de elementos aleatorios que queremos, que en este caso son 6
 
-    def generate_pin():
+    def generate_pin(self):
 
-        return random.randint(1, 100)
+        return random.sample(self.pin, 6)
 
 #En el segundo método que se nos pide de la clase, debemos de imprimir un ticker al cliente
 #que a aparcado en la plaza, para ello necesitamos saber el tipo de vehículo, su matricula,
@@ -134,7 +145,7 @@ def calcular_coste_plaza(self, matricula):
 
         if abonado:
     
-            pin = self.generar_pin()
+            pin = self.generate_pin()
     
             self.abonados[matricula] = pin
     
@@ -156,9 +167,9 @@ def calcular_coste_plaza(self, matricula):
        
         print("Plaza asignada: ", vehiculo.plaza)
        
-            if abonado:
+        if abonado:
        
-        print("Pin de retirada: ", pin)
+            print("Pin de retirada: ", pin)
 
 
 #RETIRAR VEHÍCULO

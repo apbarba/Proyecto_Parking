@@ -1,3 +1,9 @@
+import datetime
+
+from Parking.Vehiculo.Moto import Moto
+from Parking.Vehiculo.Pmr import PMR
+from Parking.Vehiculo.Turismo import Turismo
+
 class Ticket:
     
     def __init__(self, matricula, plaza_id, pin, tipo_vehiculo):

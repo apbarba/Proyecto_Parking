@@ -3,6 +3,8 @@
 #utilizar los atributos necesarios en cada clase hija.
 #En caada clase hija tengo pensado hacer el método distintivo
 #de cada una de sus diferentes tarifas
+from Parking.Vehiculo.Vehiculo import Vehiculo
+
 class Turismo(Vehiculo):
     
     def __init__(self, matricula, fecha_entrada):
