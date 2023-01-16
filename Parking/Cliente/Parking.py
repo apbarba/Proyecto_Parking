@@ -11,13 +11,13 @@ class Parking:
 #Este primer método creado son los atributos inicializados de la clase necesarioa
     def __init__(self, num_plazas, plazas_turismo, plazas_moto, plazas_pmr):
 
-        self.num_plazas = num_plazas
+        self.__num_plazas = num_plazas
 
-        self.plazas_turismo = plazas_turismo
+        self.__plazas_turismo = plazas_turismo
 
-        self.plazas_moto = plazas_moto
+        self.__plazas_moto = plazas_moto
 
-        self.plazas_pmr = plazas_pmr
+        self.__plazas_pmr = plazas_pmr
 
         self.plazas = []
 
