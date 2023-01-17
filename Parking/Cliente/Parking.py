@@ -1,23 +1,26 @@
 
+import datetime
 import random
 
-from datetime import datetime
 from Parking.Vehiculo.Moto import Moto
 from Parking.Vehiculo.Pmr import PMR
 from Parking.Vehiculo.Turismo import Turismo
 
+
 class Parking:
 
 #Este primer método creado son los atributos inicializados de la clase necesarioa
-    def __init__(self, num_plazas, plazas_turismo, plazas_moto, plazas_pmr):
+    def __init__(self, num_plazas, plazas_turismo, plazas_moto, plazas_pmr, plazas_id):
 
-        self.__num_plazas = num_plazas
+        self.num_plazas = num_plazas
 
-        self.__plazas_turismo = plazas_turismo
+        self.plazas_turismo = plazas_turismo
 
-        self.__plazas_moto = plazas_moto
+        self.plazas_moto = plazas_moto
 
-        self.__plazas_pmr = plazas_pmr
+        self.plazas_pmr = plazas_pmr
+        
+        self.plazas_id = plazas_id
 
         self.plazas = []
 
@@ -201,7 +204,7 @@ class Parking:
        
                 factura = vehiculo.generar_factura()
        
-                self.plazas_libres.append(vehiculo.plaza)
+                self.num_plazas.append(vehiculo.plaza)
        
                 self.vehiculos.remove(vehiculo)
        
@@ -230,3 +233,22 @@ class Parking:
           #      factura = vehiculo.generar_factura()
                 
            #     pass
+
+#En este método se muestra por pantalla el estado de las plazas, si están libre, ocupadas abono
+#ocupa y abono libre a parte del identificados de cada plaza
+    def estado_plazas(self,num_plazas):
+        
+        if self.plazas:
+            
+            return 0
+            
+        #Va a imprimir como se encuentra el estado del Parking
+        print('Plazas libres: ', )
+            
+        print('Plazas ocupadas: ', )
+            
+        print('Plaza de abonados ocupados: ' ,)
+            
+        print('Plaza de abonados libres: ', )
+            
+        
