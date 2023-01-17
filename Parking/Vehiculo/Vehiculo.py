@@ -3,7 +3,7 @@
 
 class Vehiculo:
 
-    def __init__(self, matricula, fecha_entrada, tarifa):
+    def __init__(self, matricula, fecha_entrada, tarifa, tipo_vehiculo, plaza):
         
         self.matricula = matricula
         
@@ -12,6 +12,16 @@ class Vehiculo:
         self.fecha_salida = None
         
         self.tarifa = tarifa
+
+        self.tipo_vehiculo = tipo_vehiculo
+
+        self.plaza = plaza
+
+        self.estado = 'Ocupado'
+
+        self.cliente = None
+
+
         
         self.costo_total = 0
 

@@ -13,6 +13,8 @@ class Abonados(Parking):
        
        self.abonados = []
 
+       self.vehiculos = []
+
 
     def depositar_abonado(self, matricula, dni, nombre, apellidos, num_tarjeta, tipo_abono, email, tipo_vehiculo):
         
@@ -50,17 +52,19 @@ class Abonados(Parking):
         
     def retirar_abonados(self, matricula, plaza_id, pin):
             
-        for self.abonados in self.abonados[matricula]:
+        for v in self.vehiculos:
+
+            if v.matricula == matricula and v.plaza_id == plaza_id
+
+                if v.cliente.pin != pin:
+
+                    raise ValueError('Pin introducido es incorrecto')
                 
-            if matricula == matricula:
-                    
-                if pin != pin:
-                        
-                    raise ValueError('El pin introducido es incorrecto, por favor, vuelve a intentarlo')
-                    
-                self.plazas_libres.append(self.abonados.plazas)
-                    
-                self.abonados.remove(abonados) #No se me declara
-                    
-        return 'Se retiró correctamente, su plaza sigue guardada'
+                v.estado = 'Reservada'
+
+                v.cliente = None
+
+                return 'Retirado correctamente'
+            
+        raise ValueError('Vehículo no encontrado')
                 
