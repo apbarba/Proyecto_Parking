@@ -26,9 +26,10 @@ while opcionMenu != 0:
 
                 matricula = input("Por favor, introduzca la matrícula de su vehículo: ")
 
-                Vehiculo.tipo_vehiculo = input("Introduzca el tipo de vehiculo(coche, moto o pmr): ")
-
-                print(Parking.depositar_vehiculo(matricula, Vehiculo.tipo_vehiculo)) #No pilla el tipo_vehiculo
+                tipo_vehiculo = input("Introduzca el tipo de vehiculo(coche, moto o pmr): ")
+                vehiculo = Vehiculo(matricula, tipo_vehiculo)
+                print(parking.depositar_vehiculo(vehiculo.matricula, vehiculo.tipo_vehiculo))
+ #No pilla el tipo_vehiculo
 
             if opcion_Cliente == 2:
 
