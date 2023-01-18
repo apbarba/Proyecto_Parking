@@ -27,6 +27,10 @@ class Parking:
 
         self.lista_ticket = []
 
+        self.abonados = []
+
+        self.lista_plazas = []
+
 
     
     def depositar_vehiculo(self, matricula, tipo_vehiculo):
