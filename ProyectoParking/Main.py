@@ -8,12 +8,7 @@ from Vehiculo import Vehiculo
 
 parking = Parking(100)
 
-
-
-
-
 menu_Principal()
-
 
 opcionMenu = int(input())
 

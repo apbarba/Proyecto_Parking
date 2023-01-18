@@ -114,17 +114,11 @@ class Parking:
                     else:
 
                         raise ValueError("Tipo de vehículo no válido.")
-
                     coste = tarifa * tiempo_estacionado_minutos
-
                     self.cobros.append(
-
                         {'matricula': matricula, 'fecha_entrada': ticket["fecha_entrada"], 'fecha_salida': fecha_salida,
-
                          'coste': coste})
-
                     self.lista_tickets.remove(ticket)
-
-        return f"El coste total a pagar es de {coste} euros. El tipo de vehículo es {ticket['tipo_vehiculo']}. El vehículo con matrícula {matricula} ha sido retirado del parking."
+                    return f"El coste total a pagar es de {coste} euros. El tipo de vehículo es {ticket['tipo_vehiculo']}.El vehículo con matrícula {matricula} ha sido retirado del parking."
 
         return "Matricula, plaza o pin incorrecto"
