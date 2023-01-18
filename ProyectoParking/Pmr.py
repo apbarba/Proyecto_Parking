@@ -3,8 +3,8 @@ from Vehiculo import Vehiculo
 
 class PMR(Vehiculo):
 
-    def __init__(self, matricula, numero_ticket):
+    def __init__(self, matricula, tipo_vehiculo):
 
-        super().__init__(matricula, numero_ticket)
+        super().__init__(matricula, tipo_vehiculo)
 
         self.tarifa = 0.10

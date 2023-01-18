@@ -1,35 +1,25 @@
 
 import datetime
-from sqlite3 import Cursor
+import random
 
 
 class Ticket:
     
-    def __init__(self, matricula, id_plaza, pin):
+    def __init__(self, matricula, id_plaza, pin, tipo_vehiculo):
     
         self.matricula = matricula
     
         self.id_plaza = id_plaza
     
-        self.pin = pin
+        self.pin = random.sample(pin, 6)
     
         self.fecha_entrada = datetime.datetime.now()
     
         self.fecha_salida = None
     
         self.coste = None
-    
-        Cursor.execute(f"SELECT * FROM plazas WHERE id = {id_plaza}")
-    
-        plaza = _Cursor.fetchone()
-    
-        if plaza:
-    
-            self.tipo_vehiculo = plaza[1]
-    
-        else:
-    
-            raise ValueError("No existe plaza con ese id")
+
+        self.tipo_vehiculo = tipo_vehiculo
 
 
     def calcular_coste(self):

@@ -25,6 +25,8 @@ class Parking:
 
         self.cobros = []
 
+        self.lista_ticket = []
+
 
     
     def depositar_vehiculo(self, matricula, tipo_vehiculo):
@@ -80,3 +82,45 @@ class Parking:
         else:
         
             return "Tipo de vehículo no válido."
+
+        def retirar_vehiculo(self, matricula, id_plaza, pin):
+
+            for ticket in self.lista_tickets:
+
+                if ticket["matricula"] == matricula and ticket["id_plaza"] == id_plaza and ticket["pin"] == pin:
+
+                    fecha_salida = datetime.datetime.now()
+
+                    tiempo_estacionado = fecha_salida - ticket["fecha_entrada"]
+
+                    tiempo_estacionado_minutos = int(tiempo_estacionado.total_seconds() / 60)
+
+                    if ticket["tipo_vehiculo"] == "coche":
+
+                        tarifa = 0.12
+
+                    elif ticket["tipo_vehiculo"] == "moto":
+
+                        tarifa = 0.08
+
+                    elif ticket["tipo_vehiculo"] == "pmr":
+
+                        tarifa = 0.10
+
+                    else:
+
+                        raise ValueError("Tipo de vehículo no válido.")
+
+                    coste = tarifa * tiempo_estacionado_minutos
+
+                    self.cobros.append(
+
+                        {'matricula': matricula, 'fecha_entrada': ticket["fecha_entrada"], 'fecha_salida': fecha_salida,
+
+                         'coste': coste})
+
+                    self.lista_tickets.remove(ticket)
+
+        return f"El coste total a pagar es de {coste} euros. El tipo de vehículo es {ticket['tipo_vehiculo']}. El vehículo con matrícula {matricula} ha sido retirado del parking."
+
+        return "Matricula, plaza o pin incorrecto"

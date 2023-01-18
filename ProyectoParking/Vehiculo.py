@@ -1,8 +1,8 @@
 
 class Vehiculo:
     
-    def __init__(self, matricula, numero_ticket):
+    def __init__(self, matricula, tipo_vehiculo):
     
         self.matricula = matricula
-    
-        self.numero_ticket = numero_ticket
+
+        self.tipo_vehiculo = tipo_vehiculo
