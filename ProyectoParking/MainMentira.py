@@ -1,8 +1,12 @@
+import pickle
+
 from Model.Abonados import Abonados
 from Model.Parking import Parking
 from Services.ParkingService import ParkingService
 
 if __name__ == "__main__":
+
+
     # Crear un objeto parking
     parking = Parking(100)
 
@@ -11,6 +15,13 @@ if __name__ == "__main__":
 
     # Crear un abonado
     abonado = Abonados("12345678A", "Juan", "Pérez", "1234567812345678", "pilarbarba", "1234")
+
+    with open('parking_service.pickle', 'wb') as handle:
+        pickle.dump(parking_service, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        # Cargar la instancia desde el archivo usando pickle
+    with open('parking_service.pickle', 'rb') as handle:
+        parking_service_loaded = pickle.load(handle)
 
     # Asignar plaza al abonado
     id_plaza = parking_service.asignar_plaza(abonado, "coche")
@@ -49,5 +60,8 @@ if __name__ == "__main__":
     # Caducidad de abonos
     result = parking_service.caducidad_abonos_mes("Enero")
     print(result)
-    result = parking_service.caducidad_abonos_ultimos_dias(10)
+    result = parking_service_loaded.caducidad_abonos_ultimos_dias(10)
     print(result)
+
+    # Guardar la instancia en un archivo usando pickle
+

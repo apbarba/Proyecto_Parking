@@ -1,3 +1,8 @@
+import pickle
+
+import schedule
+import time
+
 from Model.Parking import *
 
 from Model.Abonados import  *
@@ -7,6 +12,48 @@ class ParkingService():
     def __init__(self, parking):
 
         self.parking = parking
+
+        self.intervalo_guardado = 300
+
+        self.ultimo_guardado = time.time()
+
+    def save_to_pickle(self, filename):
+
+        with open(filename, "wb") as file:
+
+            pickle.dump(self, file)
+
+    @classmethod
+    def load_from_pickle(cls, filename):
+
+        with open(filename, "rb") as file:
+
+            return pickle.load(file)
+
+    def almacenamiento_automatico(self):
+
+        schedule.every(5).minutes.do(self.guardar_datos)
+
+    def iniciar_almacenamiento_automatico(self):
+
+        while True:
+
+            schedule.run_pending()
+
+            time.sleep(1)
+
+    def guardar_datos(self):
+
+        if time.time() - self.ultimo_guardado > self.intervalo_guardado:
+
+            with open("datos_parking.pickle", "wb") as f:
+
+            pickle.dump(self.parking, f)
+
+        self.ultimo_guardado = time.time()
+
+    print(f"Datos guardados en {datetime.datetime.now()}")
+
     def generate_pin(self):
 
         return random.randint(1, 100)
