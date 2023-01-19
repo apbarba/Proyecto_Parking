@@ -8,4 +8,14 @@ class Moto(Vehiculo):
 
         super().__init__(matricula, tipo_vehiculo)
 
-        self.tarifa = 0.08
+        self.__tarifa = 0.08
+
+    @property
+    def tarifa(self):
+
+        return self.__tarifa
+
+    @tarifa
+    def tarifa(self, value):
+
+        self.__tarifa = value
