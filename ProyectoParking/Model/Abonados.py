@@ -1,6 +1,5 @@
-from Parking import Parking
-from Vehiculo import Vehiculo
-from random import random
+from Model.Parking import Parking
+import random
 
 
 class Abonados():
@@ -19,24 +18,28 @@ class Abonados():
 
         self.email = email
 
-        self.pin = None
+        self.pin = random.randint(1,100)
+
+        self.abonados = []
 
     parking = Parking(100)
-    def depositar_abonado(self, matricula, parking):
 
-        if self.dni in parking.abonados:
 
-            self.pin = parking.abonados[self.dni]['pin']
+    def depositar_abonado(self, matricula, dni):
+
+        if self.dni in self.abonados:
+
+            self.pin = self.abonados[self.dni]['pin']
 
             id_plaza = None
 
             if self.tipo_abono == "coche":
 
-                if len(parking.lista_coches) < parking.plazas_coche:
+                if len(self.parking.lista_coches) < self.parking.plazas_coche:
 
-                    id_plaza = len(parking.lista_coches)
+                    id_plaza = len(self.parking.lista_coches)
 
-                    parking.lista_coches.append(matricula)
+                    self.parking.lista_coches.append(matricula)
 
                     return f"Plaza de coches asignada al abonado. Su número de ticket es {id_plaza}, matrícula {matricula}, pin asociado {self.pin}."
 
@@ -46,11 +49,11 @@ class Abonados():
 
             elif self.tipo_abono == "moto":
 
-                if len(parking.lista_motos) < parking.plazas_moto:
+                if len(self.parking.lista_motos) < self.parking.plazas_moto:
 
-                    id_plaza = len(parking.lista_motos)
+                    id_plaza = len(self.parking.lista_motos)
 
-                    parking.lista_motos.append(matricula)
+                    self.parking.lista_motos.append(matricula)
 
                     return f"Plaza de motos asignada al abonado. Su número de ticket es {id_plaza}, matrícula {matricula}, pin asociado {self.pin}."
 
@@ -60,11 +63,11 @@ class Abonados():
 
             elif self.tipo_abono == "pmr":
 
-                if len(parking.lista_pmr) < parking.plazas_pmr:
+                if len(self.parking.lista_pmr) < self.parking.plazas_pmr:
 
-                    id_plaza = len(parking.lista_pmr)
+                    id_plaza = len(self.parking.plazas_pmr)
 
-                    parking.lista_pmr.append(matricula)
+                    self.parking.lista_pmr.append(matricula)
 
                     return f"Plaza para PMR asignada al abonado. Su número de ticket es {id_plaza}, matrícula {matricula}, pin asociado {self.pin}."
 
@@ -80,15 +83,15 @@ class Abonados():
 
             return "No se encuentra su Dni, lo sentimos"
 
-    def retirar_abonado(self, dni, matricula, parking):
+    def retirar_abonado(self, dni, matricula):
 
-        if dni in parking.abonados:
+        if dni in self.parking.abonados:
 
-            id_plaza = parking.abonados[dni]['id_plaza']
+            id_plaza = self.parking.abonados[dni]['id_plaza']
 
-            if parking.lista_plazas[id_plaza]['matricula'] == matricula:
+            if self.parking.lista_plazas[id_plaza]['matricula'] == matricula:
 
-                parking.lista_plazas[id_plaza]['estado'] = 'libre'
+                self.parking.lista_plazas[id_plaza]['estado'] = 'libre'
 
                 return f"Su vehículo con matrícula {matricula} ha sido retirado de la plaza {id_plaza}."
 
