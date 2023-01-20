@@ -9,9 +9,11 @@ class Abonos(Abonados):
 
         super().__init__(self, dni, nombre, apellidos, tarjeta_credito, email, matricula)
 
-        self.__fecha_cancelacion = None
+        self.__fecha_cancelacion = datetime.now()
 
         self.__fecha_activacion = datetime.datetime.now()
+
+        self.__mes = self.__fecha_cancelacion.month
 
     @property
     def fecha_cancelacion(self):

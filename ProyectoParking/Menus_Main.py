@@ -38,7 +38,7 @@ def opciones_Administrador(self):
 
     print("6) Dar baja de abono")
 
-    print("5) Caducidad de abonos un mes")
+    print("7) Caducidad de abonos un mes")
 
     print("8) Caducidad de abono 10 días")
 

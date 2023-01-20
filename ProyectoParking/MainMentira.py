@@ -12,7 +12,7 @@ if __name__ == "__main__":
     parking_service = ParkingService(parking)
 
     # Crear un abonado
-    abonado = Abonados("12345678A", "Juan", "Pérez", "1234567812345678", "pilarbarba", "1234")
+    abonado = Abonados("12345678A", "ana", "barba", "1234567812345678", "pilarbarba", "1234")
 
     with open('parking_service.pickle', 'wb') as handle:
         pickle.dump(parking_service, handle, protocol=pickle.HIGHEST_PROTOCOL)

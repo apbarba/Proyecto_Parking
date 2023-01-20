@@ -1,3 +1,4 @@
+import pickle
 
 from Model.Abonados import Abonados
 from Menus_Main import menu_Principal, opciones_Usuario, opciones_Administrador
@@ -9,7 +10,13 @@ parking = Parking(100)
 
 parkingService = ParkingService(parking)
 
-abonado = Abonados("12345678A", "Juan", "Pérez", "1234567812345678", "pilarbarba", "1234")
+abonado = Abonados("12345678A", "Ana", "Barba", "1234567812345678", "pilarbarba", "1234")
+
+with open('parkingService.pickle', 'wb') as handle:
+    pickle.dump(parkingService, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+with open('parkingService.pickle', 'rb') as handle:
+    parking_service_loaded = pickle.load(handle)
 
 menu_Principal()
 
@@ -49,15 +56,9 @@ while opcionMenu != 0:
 
             if opcion_Cliente == 3:
 
-                matricula = input("Por favor, introduzca la matrícula de su vehículo: ")
+                result = parkingService.asignar_plaza(abonado, "coche")
 
-                tipo_vehiculo = input("Introduzca el tipo de vehiculo(coche, moto o pmr): ")
-
-                dni = input("Introduzca su dni: ")
-
-                vehiculo = Vehiculo(matricula, tipo_vehiculo)
-
-                print(parkingService.depositar_abonado(vehiculo.matricula, dni))
+                print(f"Plaza asignada al abonado con matrícula {abonado.matricula} y DNI {abonado.dni}, con el número de plaza {id_plaza}")
 
             if opcion_Cliente == 4:
 
@@ -78,7 +79,7 @@ while opcionMenu != 0:
 
         print("Ha salido correctamente de la opción cliente")
 
-    if opcionMenu == 2:
+    elif opcionMenu == 2:
 
         opciones_Administrador(parkingService)
 
@@ -92,14 +93,12 @@ while opcionMenu != 0:
 
                 print(parkingService.estado_plazas())
 
-                pass
 
+            elif opcionAdministrador == 2:
 
-            if opcionAdministrador == 2:
+                fecha_inicio = "2023-01-23 12:23:10"
 
-                fecha_inicio = input("Ingrese fecha de inicio (yyyy-mm-dd hh:mm:ss): ")
-
-                fecha_fin = input("Ingrese fecha de fin (yyyy-mm-dd hh:mm:ss): ")
+                fecha_fin = "2023-01-23 13:00:11"
 
                 fecha_inicio_objeto = datetime.datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
 
@@ -109,6 +108,87 @@ while opcionMenu != 0:
 
                 print(cobros)
 
+            elif opcionAdministrador == 3:
 
+                result = parkingService.consulta_abonados()
+
+                print(result)
+
+            elif opcionAdministrador == 4:
+
+                dni = input("Introduzca su dni por favor: ")
+
+                nombre = input("Introduzca su nombre por favor: ")
+
+                apellido = input("Introduzca su apellido por favor: ")
+
+                num_tarjeta = input("Introduzca su número de tarjeta: ")
+
+                tipo_abono = input("Introduzca el tipo de abono que desea (mensual, trimestral, semestral o anual): ")
+
+                email = input("Introduzca su email por favor: ")
+
+                abonado = parkingService.alta_abono(dni, nombre, apellido, num_tarjeta, tipo_abono, email)
+
+                print(abonado)
+
+            elif opcionAdministrador == 5:
+
+                dni = input("Introduzca su dni a cambiar: ")
+
+                nombre = input("Introduzca su nombre a cambiar: ")
+
+                apellido = input("Introduzca su apellido a cambiar:")
+
+                num_tarjeta = input("Introduzca su número de tarjeta")
+
+                tipo_abono = input("Introduzca su tipo de abono a cambiar: ")
+
+                modificado = parkingService.modificar_abono(dni, nombre, apellido, num_tarjeta, tipo_abono)
+
+                print(modificado)
+
+            elif opcionAdministrador == 6:
+
+
+                dniBaja = input("Introduzca su dni para darse de baja")
+
+                result = parkingService.eliminar_abono(dniBaja)
+
+                print(result)
+
+            elif opcionAdministrador == 7:
+
+                mes = input("Introduzca el mes: ")
+
+                result = parkingService.caducidad_abonos_mes(mes)
+
+                print(result)
+
+            elif opcionAdministrador == 8:
+
+                result = parking_service_loaded.caducidad_abonos_ultimos_10dias(10)
+
+                print(result)
+
+            else:
+
+                print("Opción incorrecta")
+
+            opciones_Administrador(parkingService)
+
+            opcionAdministrador = int(input())
+
+        print("Atrá al menú Principal")
+
+    else:
+
+        print("Opción incorrecta")
+
+    menu_Principal()
+
+    opcionMenu = int(input())
+
+print("Espero que le haya servido y disfrute")
 
 

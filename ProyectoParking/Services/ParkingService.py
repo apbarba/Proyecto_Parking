@@ -60,6 +60,8 @@ class ParkingService():
 
     def asignar_plaza(self, abonado, tipo_vehiculo):
 
+        pin = self.generate_pin()
+
         id_plaza = None
 
         if tipo_vehiculo == "coche":
@@ -72,7 +74,7 @@ class ParkingService():
 
                 id_plaza += 1
 
-                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo})
+                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo, "pin":pin})
 
                 return id_plaza
 
@@ -90,7 +92,7 @@ class ParkingService():
 
                 id_plaza += 1
 
-                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo})
+                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo, "pin":pin})
 
                 return id_plaza
 
@@ -108,7 +110,7 @@ class ParkingService():
 
                 id_plaza += 1
 
-                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo})
+                self.parking.abonados.append({"matricula":abonado.matricula, "id_plaza":id_plaza, "dni":abonado.dni, "tipo_vehiculo":tipo_vehiculo, "pin":pin})
 
                 return id_plaza
 
@@ -355,36 +357,6 @@ class ParkingService():
 
         return None
 
-    def depositar_abonado(self, matricula, dni):
-
-        pin = self.generate_pin()
-
-        id_plaza = None
-
-        fecha_entrada = datetime.datetime.now()
-
-        abonado = self.buscar_abonado(dni)
-
-        if abonado:
-
-            id_plaza = self.asignar_plaza(matricula, abonado["tipo_vehiculo"])
-
-            if id_plaza:
-
-                self.parking.lista_ticket.append(
-
-                    {"matricula": matricula, "id_plaza": id_plaza, "pin": pin, "fecha_entrada": fecha_entrada,
-
-                     "tipo_vehiculo": abonado["tipo_vehiculo"]})
-
-                return f"Plaza asignada al abonado. Su número de plaza es {id_plaza}, matricula {matricula}, fecha de entrada {fecha_entrada}, y su pin es {pin}."
-
-            else:
-
-                return "No hay plazas disponibles para el tipo de vehículo del abonado."
-        else:
-
-            return "El abonado no se encuentra registrado."
 
     def retirar_abonado(self, matricula, dni, pin):
 
@@ -516,7 +488,9 @@ class ParkingService():
 
         for abono in self.parking.lista_abonos:
 
-            if abono.fecha_cancelacion.month == mes:
+            fecha_cancelacion = datetime.datetime.strptime(abono["fecha_cancelacion"], "%Y-%m-%d %H:%M:%S.%f")
+
+            if fecha_cancelacion.month == mes:
 
                 abonos_caducados.append(abono)
 
