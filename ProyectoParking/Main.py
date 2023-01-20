@@ -1,6 +1,6 @@
 
 from Model.Abonados import Abonados
-from Menus_Main import menu_Principal, opciones_Usuario
+from Menus_Main import menu_Principal, opciones_Usuario, opciones_Administrador
 from Model.Parking import *
 from Model.Vehiculo import Vehiculo
 from Services.ParkingService import ParkingService
@@ -9,8 +9,7 @@ parking = Parking(100)
 
 parkingService = ParkingService(parking)
 
-
-abonados = Abonados('1234A', 'Ana', 'Barba', '12345', 'Temporal', 'pilar')
+abonado = Abonados("12345678A", "Juan", "Pérez", "1234567812345678", "pilarbarba", "1234")
 
 menu_Principal()
 
@@ -24,7 +23,7 @@ while opcionMenu != 0:
 
         opcion_Cliente = int(input())
 
-        while opcion_Cliente != 0:
+        while opcion_Cliente != 5:
 
             if opcion_Cliente == 1:
 
@@ -34,9 +33,9 @@ while opcionMenu != 0:
 
                 vehiculo = Vehiculo(matricula, tipo_vehiculo)
 
-                print(parkingService.depositar_vehiculo(vehiculo.matricula, vehiculo.tipo_vehiculo))
-
                 print(parkingService.estado_plazas())
+
+                print(parkingService.depositar_vehiculo(vehiculo.matricula, vehiculo.tipo_vehiculo))
 
             if opcion_Cliente == 2:
 
@@ -58,7 +57,7 @@ while opcionMenu != 0:
 
                 vehiculo = Vehiculo(matricula, tipo_vehiculo)
 
-                print(abonados.depositar_abonado(vehiculo.matricula, abonados.dni))
+                print(parkingService.depositar_abonado(vehiculo.matricula, dni))
 
             if opcion_Cliente == 4:
 
@@ -70,9 +69,33 @@ while opcionMenu != 0:
 
                 vehiculo = Vehiculo(matricula, tipo_vehiculo)
 
-                print(abonados.retirar_abonado(vehiculo.matricula, abonados.dni))
+                print(parkingService.retirar_abonado(vehiculo.matricula,dni))
 
-            if opcion_Cliente == 5:
+
+            opciones_Usuario(parkingService)
+
+            opcion_Cliente = int(input())
+
+        print("Ha salido correctamente de la opción cliente")
+
+    if opcionMenu == 2:
+
+        opciones_Administrador(parkingService)
+
+        opcionAdministrador = int(input())
+
+        while opcionAdministrador != 9:
+
+            if opcionAdministrador == 1:
+
+                print("El estado de las plazas es: ")
+
+                print(parkingService.estado_plazas())
+
+                pass
+
+
+            if opcionAdministrador == 2:
 
                 fecha_inicio = input("Ingrese fecha de inicio (yyyy-mm-dd hh:mm:ss): ")
 
@@ -85,10 +108,6 @@ while opcionMenu != 0:
                 cobros = parkingService.facturacion_entre_fechas(fecha_inicio_objeto, fecha_fin_objeto)
 
                 print(cobros)
-
-            opciones_Usuario(parkingService)
-
-            opcion_Cliente = int(input())
 
 
 

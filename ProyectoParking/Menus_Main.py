@@ -23,6 +23,7 @@ def opciones_Usuario(self):
 
 
 def opciones_Administrador(self):
+
     print("PARKING SALESIANOS")
 
     print("1) Ver el estado del Parking")
@@ -31,8 +32,14 @@ def opciones_Administrador(self):
 
     print("3) Consultar Abonados")
 
-    print("4) Abonos")
+    print("4) Dar alta de abono")
 
-    print("5) Caducidad de abonos")
+    print("5) Modificar abono")
 
-    print("6) Salir")
+    print("6) Dar baja de abono")
+
+    print("5) Caducidad de abonos un mes")
+
+    print("8) Caducidad de abono 10 días")
+
+    print("9) Salir")

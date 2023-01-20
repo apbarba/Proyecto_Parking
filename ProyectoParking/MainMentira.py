@@ -7,10 +7,8 @@ from Services.ParkingService import ParkingService
 if __name__ == "__main__":
 
 
-    # Crear un objeto parking
     parking = Parking(100)
 
-    # Crear un objeto ParkingService
     parking_service = ParkingService(parking)
 
     # Crear un abonado
@@ -60,8 +58,11 @@ if __name__ == "__main__":
     # Caducidad de abonos
     result = parking_service.caducidad_abonos_mes("Enero")
     print(result)
-    result = parking_service_loaded.caducidad_abonos_ultimos_dias(10)
+    result = parking_service_loaded.caducidad_abonos_ultimos_10dias(10)
     print(result)
 
-    # Guardar la instancia en un archivo usando pickle
+    #Estado de las plazas disponibles
+    print(parking_service.estado_plazas())
+
+
 
